@@ -33,6 +33,9 @@ button{
 .btn-cart, .logo{
     align-self: center;
 }
+.invisible{
+    display: none;
+}
 .products{
     column-gap: 30px;
     display: grid;
