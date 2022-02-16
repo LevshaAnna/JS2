@@ -5,7 +5,8 @@ const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-a
 class ProductsList {
     constructor(container = '.products') {
         this.container = container;
-        this.goods = [];//массив товаров из JSON документа
+        this.goods = [];//массив товаров из JSON документа сюда будет вставляться
+
         this._getProducts()
             .then(data => { //data - объект js
                 this.goods = data;
@@ -57,38 +58,63 @@ class ProductItem {
 }
 
 class Cart {
-    constructor(container = '.cart-item')
+    constructor(container = '.cart-item') {
         this.container = container;
-this.goods = [];
-this._getBasketItem()
-    .then(data => {
-        this.goods = data.contents;
-        this.render()
-    });
+        this.goods = [];
+
+        this._clickOnCart()
+        this._getBasketItem()
+            .then(data => {
+                this.goods = data.contents;
+                this.render()
+            });
+    }
 
 
-
-_getBasketItem(){
-    return fetch(`${API}/getBasket.json`)
-        .then(result => result.json())
-        .catch(error => {
-            console.log(error);
+    _clickOnCart() {
+        document.querySelector('.btn-cart').addEventListener('click', () => {
+            document.querySelector(this.container).classList.toggle('invisible');
         })
+    }
+
+    _getBasketItem() {
+        return fetch(`${API}/getBasket.json`)
+            .then(result => result.json())
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+
+
+    render() {
+        const block = document.querySelector(this.container);
+        for (let product of this.goods) {
+            const cartItem = new CartItem();
+
+            block.insertAdjacentHTML('beforeend', cartItem.render(product));
+        }
+
+
+    }
+
 }
 
+class CartItem {
+    render() {
+        return `<div class="cart-item" data-id="${product.id_product}">
+                <div class="product-bio">
 
+                <img src="${product.img}" alt="Some img">
 
-addProduct() {
-
-}
-
-removeProduct() {
-
-}
-render() {
-
-}
-
+                <div class = "product-description">
+                    <p class = "pruduct-title"> ${product.product_name}</p>
+                    <p class="product-quantity"> Quantity: ${product.quantity}</p>
+                    <p class = "product-price">${product.price}</p>
+                </div>
+                </div>
+                `
+    }
 }
 
 let list = new ProductsList();
