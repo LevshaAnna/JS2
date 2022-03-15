@@ -1,0 +1,18 @@
+.header{
+    background-color: black;
+    padding: 19px 0;
+
+    &__wrap{
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+    }
+    &__logo{
+        margin-right: 41px;
+    }
+    &__header__item{
+        &:not(:last-child){
+            margin-right: 33px;
+        }
+    }
+}
